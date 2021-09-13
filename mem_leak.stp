@@ -1,0 +1,47 @@
+#!/usr/bin/stap
+
+probe begin {
+    printf("=============begin============\n")
+}
+ 
+global mem_records
+global alloc_time
+global alloc_stacks
+
+probe process("/usr/lib64/libc-2.17.so").function("__libc_malloc").return {
+    if (target() == pid()) {
+        if (mem_records[$return] == 0) {
+            mem_records[$return]++
+            alloc_time[$return] = ctime()
+            alloc_stacks[$return] = sprint_ubacktrace()
+        }
+    }
+}
+ 
+probe process("/usr/lib64/libc-2.17.so").function("__libc_free").call {
+    if (target() == pid()) {
+        mem_records[$mem]--
+ 
+        if (mem_records[$mem] == 0) {
+            if ($mem != 0) {
+		delete mem_records[$mem]
+                delete alloc_stacks[$mem]
+		delete alloc_time[$mem]
+            }
+        } else if (mem_records[$mem] < 0 && $mem != 0) {
+            printf("double free mem_records[%p]\n", $mem)
+            delete mem_records[$mem]
+            delete alloc_stacks[$mem]
+	    delete alloc_time[$mem]
+        }
+    }
+}
+ 
+probe end {
+    printf("=============end============\n")
+    foreach(mem in mem_records) {
+        if (mem_records[mem] > 0) {
+            printf("alloc_mem: %p\talloc_time: %s\talloc_stacks: %s\n\n",mem, alloc_time[mem],alloc_stacks[mem])
+        }
+    }
+}

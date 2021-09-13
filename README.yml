@@ -1,0 +1,12 @@
+Normal_Dep_Info:
+ Kernel_Version: 3.10.0-514.el7.x86_64
+ Os_Version: CentOS Linux release 7.4.1708 (Core)
+ module:
+  kernel-devel: kernel-devel-3.10.0-514.el7.x86_64
+  location: you can get it from the directory of "./systap_rpms/kernel-devel/kernel-devel-3.10.0-514.el7.x86_64",of course you can get it by downloading from website
+Transparent_Dep_Info:
+ Kernel_Version: 3.10.0
+ Os_Version: CentOS Linux release 7.4.1708 (Core) 
+ module:
+  kernel-devel-info: kernel-devel-3.10.0.x86_64
+  location: you can get it from the directory of "./systap_rpms/kernel-devel-3.10.0.x86_64",of course you can rpmbuild it by modifying "compile.h/utsrelease.h"
