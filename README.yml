@@ -10,3 +10,4 @@ Transparent_Dep_Info:
  module:
   kernel-devel-info: kernel-devel-3.10.0.x86_64
   location: you can get it from the directory of "./systap_rpms/kernel-devel-3.10.0.x86_64",of course you can rpmbuild it by modifying "compile.h/utsrelease.h"
+usage: please intall systap by using mgt.sh
